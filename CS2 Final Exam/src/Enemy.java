@@ -15,7 +15,15 @@ public abstract class Enemy {
 	}
 	
 	public int hpLost(int hpDamage) {
+		if(hpDamage - defense <= 0) {
+			hpDamage =1;
+		}else {
+			hpDamage = hpDamage -defense;
+		}
 		hp = hp - hpDamage;
+		if(hp<0) {
+			hp=0;
+		}
 		return hp;
 	}
 	

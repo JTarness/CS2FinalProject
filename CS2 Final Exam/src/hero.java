@@ -32,7 +32,7 @@ public class hero {
 	public int getDefense() {
 		return defense;
 	}
-
+	
 	public int getSpeed() {
 		return speed;
 	}
@@ -46,7 +46,15 @@ public class hero {
 	}
 
 	public int hpLost(int hpDamage) {
+		if(hpDamage - defense <= 0) {
+			hpDamage =1;
+		}else {
+			hpDamage = hpDamage -defense;
+		}
 		hp = hp - hpDamage;
+		if(hp<0) {
+			hp=0;
+		}
 		return hp;
 	}
 

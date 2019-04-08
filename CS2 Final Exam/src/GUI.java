@@ -16,13 +16,33 @@ public class GUI extends Application {
 	final int HEIGHT = 500;
 	
 	final int WIDTH = 700;
-	
+	public static void combatTurn(hero x, Enemy y, Boolean Attack, Boolean Defend) {
+		if(x.getSpeed()>=y.speed()) {
+			if(Attack == true) {
+				y.hpLost(x.getAttack());
+				x.hpLost(y.attack());
+			} else {
+				x.defenseINC(2);
+				x.hpLost(y.attack());
+			}
+		}else {
+			if(Attack == true) {
+				x.hpLost(y.attack());
+				y.hpLost(x.getAttack());
+			} else {
+				x.hpLost(y.attack());
+				x.defenseINC(2);
+			}
+		}
+	}
 	
 	public static void main(String[] args) {
 		launch(args);
+		
 	}
 
 	public void start(Stage window) {
+		hero player = new hero("player",10,3,3,3);
 		window.setMinHeight(HEIGHT);
 		window.setMinWidth(WIDTH);
 		
@@ -31,18 +51,28 @@ public class GUI extends Application {
 		Button button1 = new Button("Start");
 		button1.setPrefSize(60, 40);
 		
-		// Combat Screen
+		// Combat Screen 1
+		goblin Jerry = new goblin("Jerry");
 		Button Attack = new Button("Attack");
 		Button Defend = new Button("Defend");
 		Button Flee = new Button("Flee");
 		HBox combatMenu = new HBox(50);
 		AnchorPane combat = new AnchorPane();
 		
+		
 		combatMenu.getChildren().addAll(Attack, Defend, Flee);
 		AnchorPane.setTopAnchor(combatMenu, 300.0);
 		AnchorPane.setLeftAnchor(combatMenu,200.0);
 		combat.getChildren().add(combatMenu);
 		Scene combatScene = new Scene(combat);
+		Label a = new Label("Ambush!");
+		AnchorPane.setTopAnchor(a,0.0);
+		AnchorPane.setLeftAnchor(a, 200.0);
+		while((player.getHP()!=0) || (Jerry.hp()!=0)) {
+			Attack.setOnAction(e -> combatTurn(player,Jerry,true,false));
+			Defend.setOnAction(e -> combatTurn(player,Jerry,false,true));
+			combat.getChildren().add(a);
+		}
 		
 		
 		// Floor 1 Center
