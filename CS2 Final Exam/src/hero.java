@@ -8,6 +8,10 @@ public class hero {
 	int speed;
 	ArrayList<Equipment> equipment;
 	int keys = 0;
+	final int baseHp;
+	final int baseAttack;
+	final int baseDefense;
+	final int baseSpeed;
 
 	public hero(String name, int hp, int attack, int defense, int speed) {
 		this.name = name;
@@ -15,6 +19,10 @@ public class hero {
 		this.attack = attack;
 		this.defense = defense;
 		this.speed = speed;
+		this.baseAttack=attack;
+		this.baseDefense=defense;
+		this.baseHp=hp;
+		this.baseSpeed=speed;
 	}
 
 	public String getName() {
@@ -35,6 +43,22 @@ public class hero {
 	
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public int getBaseAttack() {
+		return baseAttack;
+	}
+	
+	public int getBaseDefense() {
+		return baseDefense;
+	}
+	
+	public int getBaseHp() {
+		return baseHp;
+	}
+	
+	public int getBaseSpeed() {
+		return baseSpeed;
 	}
 
 	public ArrayList<Equipment> getEquipment() {
@@ -59,22 +83,22 @@ public class hero {
 	}
 
 	public int hpINC(int INC) {
-		hp = hp + INC;
+		hp = baseHp + INC;
 		return hp;
 	}
 
 	public int attackINC(int INC) {
-		attack = attack + INC;
+		attack = baseAttack + INC;
 		return attack;
 	}
 
 	public int defenseINC(int INC) {
-		defense = defense + INC;
+		defense = baseDefense + INC;
 		return defense;
 	}
 
 	public int speedINC(int INC) {
-		speed = speed + INC;
+		speed = baseSpeed + INC;
 		return speed;
 	}
 
