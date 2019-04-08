@@ -62,6 +62,9 @@ public class GUI extends Application {
 		
 		// Combat Screen 1
 		goblin Jerry = new goblin("Jerry");
+		
+		
+		
 		Button Attack = new Button("Attack");
 		Button Defend = new Button("Defend");
 		Button Flee = new Button("Flee");
@@ -78,7 +81,12 @@ public class GUI extends Application {
 		AnchorPane.setTopAnchor(a,0.0);
 		AnchorPane.setLeftAnchor(a, 200.0);
 		
-			Attack.setOnAction(e -> attack(Jerry));
+		
+			
+			
+			
+			
+			
 			Defend.setOnAction(e -> defend());
 			combat.getChildren().add(a);
 			
@@ -164,9 +172,18 @@ public class GUI extends Application {
 		
 		Floor1_S_N.setOnAction(e -> window.setScene(Floor1_C));
 		
-		if(Jerry.hp() <= 0) {
-			window.setScene(Floor1_S);
-		}
+		Attack.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				
+				Jerry.hpLost(player.getAttack());
+				
+				if(Jerry.hp() <= 0) {
+					a.setVisible(false);
+					window.setScene(Floor1_S);
+				}
+			}
+		});
 		
 		
 		

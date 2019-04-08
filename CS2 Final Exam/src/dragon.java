@@ -13,7 +13,7 @@ public class dragon extends Enemy {
 
 	@Override
 	public int hp() {
-		return 50;
+		return hp;
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class skeleton extends Enemy {
 
 	@Override
 	public int hp() {
-		return 30;
+		return hp;
 	}
 
 	@Override

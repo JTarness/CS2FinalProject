@@ -13,7 +13,7 @@ public class goblin extends Enemy {
 
 	@Override
 	public int hp() {
-		return 10;
+		return hp;
 	}
 
 	@Override
