@@ -16,7 +16,7 @@ public class GUI extends Application {
 	final int HEIGHT = 500;
 	
 	final int WIDTH = 700;
-	public static void combatTurn(hero x, Enemy y, Boolean Attack, Boolean Defend) {
+	/*public static void combatTurn(hero x, Enemy y, Boolean Attack, Boolean Defend) {
 		if(x.getSpeed()>=y.speed()) {
 			if(Attack == true) {
 				y.hpLost(x.getAttack());
@@ -34,6 +34,15 @@ public class GUI extends Application {
 				x.defenseINC(2);
 			}
 		}
+	}*/
+	public static void attack(goblin g) {
+		System.out.println("Attack!");
+		g.hpLost(5);
+		
+	}
+	
+	public static void defend() {
+		System.out.println("Defend!");
 	}
 	
 	public static void main(String[] args) {
@@ -68,11 +77,11 @@ public class GUI extends Application {
 		Label a = new Label("Ambush!");
 		AnchorPane.setTopAnchor(a,0.0);
 		AnchorPane.setLeftAnchor(a, 200.0);
-		while((player.getHP()!=0) || (Jerry.hp()!=0)) {
-			Attack.setOnAction(e -> combatTurn(player,Jerry,true,false));
-			Defend.setOnAction(e -> combatTurn(player,Jerry,false,true));
+		
+			Attack.setOnAction(e -> attack(Jerry));
+			Defend.setOnAction(e -> defend());
 			combat.getChildren().add(a);
-		}
+			
 		
 		
 		// Floor 1 Center
@@ -154,6 +163,12 @@ public class GUI extends Application {
 		Floor1_C_S.setOnAction(e -> window.setScene(Floor1_S));
 		
 		Floor1_S_N.setOnAction(e -> window.setScene(Floor1_C));
+		
+		if(Jerry.hp() <= 0) {
+			window.setScene(Floor1_S);
+		}
+		
+		
 		
 		// Floor 2 Center
 		Button Floor2_C_S = new Button("S");

@@ -3,7 +3,7 @@
 public class dragon extends Enemy {
 
 	public dragon(String name) {
-		super(name);
+		super(name, 50, 10, 10, 10);
 	}
 
 	@Override

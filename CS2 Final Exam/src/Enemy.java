@@ -6,8 +6,12 @@ public abstract class Enemy {
 	int attack;
 	int speed;
 	
-	public Enemy(String name) {
+	public Enemy(String name, int a, int b, int c, int d) {
 		this.name = name;
+		hp = a;
+		attack = b;
+		speed = c;
+		defense = d;
 	}
 	
 	public String getName() {
