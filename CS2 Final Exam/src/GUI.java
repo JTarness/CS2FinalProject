@@ -16,32 +16,34 @@ public class GUI extends Application {
 	final int HEIGHT = 500;
 	
 	final int WIDTH = 700;
-	/*public static void combatTurn(hero x, Enemy y, Boolean Attack, Boolean Defend) {
-		if(x.getSpeed()>=y.speed()) {
+	public static void combatTurn(hero h, Enemy e, Boolean Attack, Boolean Defend) {
+		if(h.getSpeed()>=e.speed()) {
 			if(Attack == true) {
-				y.hpLost(x.getAttack());
-				x.hpLost(y.attack());
+				e.hpLost(h.getAttack());
+				h.hpLost(e.attack());
 			} else {
-				x.defenseINC(2);
-				x.hpLost(y.attack());
+				h.defenseINC(2);
+				h.hpLost(e.attack());
 			}
 		}else {
 			if(Attack == true) {
-				x.hpLost(y.attack());
-				y.hpLost(x.getAttack());
+				h.hpLost(e.attack());
+				e.hpLost(h.getAttack());
 			} else {
-				x.hpLost(y.attack());
-				x.defenseINC(2);
+				h.hpLost(e.attack());
+				h.defenseINC(2);
 			}
 		}
-	}*/
+	}
 	public static void attack(goblin g) {
 		System.out.println("Attack!");
 		g.hpLost(5);
 		
 	}
 	
-	public static void defend() {
+	public static void defend(hero h) {
+		h.defenseINC(2);
+		
 		System.out.println("Defend!");
 	}
 	
@@ -51,6 +53,9 @@ public class GUI extends Application {
 	}
 
 	public void start(Stage window) {
+		boolean Combat_G = false;
+		boolean Combat_S = false;
+		boolean Combat_D = false;
 		hero player = new hero("player",10,3,3,3);
 		window.setMinHeight(HEIGHT);
 		window.setMinWidth(WIDTH);
@@ -87,7 +92,7 @@ public class GUI extends Application {
 			
 			
 			
-			Defend.setOnAction(e -> defend());
+			Defend.setOnAction(e -> defend(player));
 			combat.getChildren().add(a);
 			
 		
@@ -168,7 +173,24 @@ public class GUI extends Application {
 		AnchorPane.setLeftAnchor(Floor1_S_N,300.0);
 		Floor1_S_Anchor.getChildren().add(Floor1_S_N);
 		Scene Floor1_S = new Scene(Floor1_S_Anchor, WIDTH, HEIGHT);
+		
+		
+		
 		Floor1_C_S.setOnAction(e -> window.setScene(Floor1_S));
+		Floor1_C_S.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				if(Jerry.isAlive() == true) {
+					window.setScene(combatScene);
+				}
+				else {
+					 window.setScene(Floor1_S);
+				}
+			}
+		});
+		
+		
+		
 		
 		Floor1_S_N.setOnAction(e -> window.setScene(Floor1_C));
 		
@@ -179,7 +201,7 @@ public class GUI extends Application {
 				Jerry.hpLost(player.getAttack());
 				
 				if(Jerry.hp() <= 0) {
-					a.setVisible(false);
+					Jerry.dead();
 					window.setScene(Floor1_S);
 				}
 			}

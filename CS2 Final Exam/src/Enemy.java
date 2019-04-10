@@ -5,6 +5,7 @@ public abstract class Enemy {
 	int defense;
 	int attack;
 	int speed;
+	boolean alive;
 	
 	public Enemy(String name, int a, int b, int c, int d) {
 		this.name = name;
@@ -12,6 +13,7 @@ public abstract class Enemy {
 		attack = b;
 		speed = c;
 		defense = d;
+		alive = true;
 	}
 	
 	public String getName() {
@@ -29,6 +31,13 @@ public abstract class Enemy {
 			hp=0;
 		}
 		return hp;
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
+	public void dead() {
+		alive = false;
 	}
 	
 	abstract public int attack();
