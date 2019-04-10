@@ -25,5 +25,9 @@ public class dragon extends Enemy {
 	public int speed() {
 		return 10;
 	}
-
+	
+	@Override
+	public void reset() {
+		hp = 50;
+	}
 }

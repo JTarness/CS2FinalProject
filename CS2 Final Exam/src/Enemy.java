@@ -30,7 +30,7 @@ public abstract class Enemy {
 		if(hp<0) {
 			hp=0;
 		}
-		return hp;
+		return hpDamage;
 	}
 	
 	public boolean isAlive() {
@@ -44,5 +44,6 @@ public abstract class Enemy {
 	abstract public int hp();
 	abstract public int defense();
 	abstract public int speed();
+	abstract public void reset();
 
 }

@@ -26,4 +26,8 @@ public class goblin extends Enemy {
 		return 3;
 	}
 
+	@Override
+	public void reset() {
+		hp = 10;
+	}
 }

@@ -25,5 +25,10 @@ public class skeleton extends Enemy {
 	public int speed() {
 		return 5;
 	}
-
+	
+	@Override
+	public void reset() {
+		hp = 30;
+	}
+	
 }

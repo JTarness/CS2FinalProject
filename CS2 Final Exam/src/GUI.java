@@ -16,22 +16,23 @@ public class GUI extends Application {
 	final int HEIGHT = 500;
 	
 	final int WIDTH = 700;
-	public static void combatTurn(hero h, Enemy e, Boolean Attack, Boolean Defend) {
+	public static void combatTurn(hero h, Enemy e, Boolean Attack, Boolean Defend, Label a, Label b) {
 		if(h.getSpeed()>=e.speed()) {
 			if(Attack == true) {
-				e.hpLost(h.getAttack());
-				h.hpLost(e.attack());
+				a.setText(String.format("%s attacks the %s for %d damage!", h.getName(),e.getName(),e.hpLost(h.getAttack())));
+				b.setText(String.format("%s attacks the %s for %d damage!", e.getName(),h.getName(),h.hpLost(e.attack())));
 			} else {
 				h.defenseINC(2);
-				h.hpLost(e.attack());
+				a.setText(String.format("%s defends!", h.getName()));
+				b.setText(String.format("%s attacks the %s for %d damage!", e.getName(),h.getName(),h.hpLost(e.attack())));
 			}
 		}else {
 			if(Attack == true) {
-				h.hpLost(e.attack());
-				e.hpLost(h.getAttack());
+				a.setText(String.format("%s attacks the %s for %d damage!", e.getName(),h.getName(),h.hpLost(e.attack())));
+				b.setText(String.format("%s attacks the %s for %d damage!", h.getName(),e.getName(),e.hpLost(h.getAttack())));
 			} else {
-				h.hpLost(e.attack());
-				h.defenseINC(2);
+				a.setText(String.format("%s attacks the %s for %d damage!", e.getName(),h.getName(),h.hpLost(e.attack())));
+				b.setText(String.format("%s defends!", h.getName()));
 			}
 		}
 	}
@@ -48,25 +49,29 @@ public class GUI extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
-		
+		launch(args);	
 	}
 
 	public void start(Stage window) {
-		boolean Combat_G = false;
-		boolean Combat_S = false;
-		boolean Combat_D = false;
-		hero player = new hero("player",10,3,3,3);
+		hero player = new hero("Player",10,3,3,3);
+		goblin Jerry = new goblin("Goblin");
 		window.setMinHeight(HEIGHT);
 		window.setMinWidth(WIDTH);
 		
 		// Start Screen
-		Label label1 = new Label("Game Title");
-		Button button1 = new Button("Start");
-		button1.setPrefSize(60, 40);
+		Label gameTitle = new Label("Game Title");
+		Button startButton = new Button("Start");
+		startButton.setPrefSize(60, 40);
+		VBox menu = new VBox(20);
+		menu.setAlignment(Pos.CENTER);
+		menu.getChildren().addAll(gameTitle, startButton);
+		Scene startMenu = new Scene(menu, WIDTH, HEIGHT);
 		
-		// Combat Screen 1
-		goblin Jerry = new goblin("Jerry");
+		
+		
+		
+		// Goblin Combat Screen
+		
 		
 		
 		
@@ -82,18 +87,18 @@ public class GUI extends Application {
 		AnchorPane.setLeftAnchor(combatMenu,200.0);
 		combat.getChildren().add(combatMenu);
 		Scene combatScene = new Scene(combat);
-		Label a = new Label("Ambush!");
-		AnchorPane.setTopAnchor(a,0.0);
-		AnchorPane.setLeftAnchor(a, 200.0);
-		
-		
+		Label c1a = new Label(String.format("%s is attacked by a Goblin!", player.getName()));
+		AnchorPane.setTopAnchor(c1a,200.0);
+		AnchorPane.setLeftAnchor(c1a, 200.0);
+		Label c1b = new Label("");
+		AnchorPane.setTopAnchor(c1b,225.0);
+		AnchorPane.setLeftAnchor(c1b, 200.0);
+			
+			combat.getChildren().addAll(c1a,c1b);
 			
 			
 			
 			
-			
-			Defend.setOnAction(e -> defend(player));
-			combat.getChildren().add(a);
 			
 		
 		
@@ -194,18 +199,7 @@ public class GUI extends Application {
 		
 		Floor1_S_N.setOnAction(e -> window.setScene(Floor1_C));
 		
-		Attack.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				
-				Jerry.hpLost(player.getAttack());
-				
-				if(Jerry.hp() <= 0) {
-					Jerry.dead();
-					window.setScene(Floor1_S);
-				}
-			}
-		});
+		
 		
 		
 		
@@ -291,18 +285,55 @@ public class GUI extends Application {
 		
 		Floor2_S_N.setOnAction(e -> window.setScene(Floor2_C));
 			
-		VBox layout1 = new VBox(20);
-		layout1.setAlignment(Pos.CENTER);
-		layout1.getChildren().addAll(label1, button1);
-		Scene scene1 = new Scene(layout1, WIDTH, HEIGHT);
+		//Game Over Screen
+				Label gameOver = new Label("Game Over...");
+				Button retry = new Button("Retry");
+				retry.setPrefSize(60, 40);
+				
+				retry.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+					player.reset();
+					Jerry.reset();
+					window.setScene(startMenu);
+					c1a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
+					c1b.setText("");
+					}
+				});
+				
+				VBox menu2 = new VBox(20);
+				menu2.setAlignment(Pos.CENTER);
+				menu2.getChildren().addAll(gameOver, retry);
+				Scene gameOverScene = new Scene(menu2,WIDTH, HEIGHT);
+
+				
+		Attack.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				combatTurn(player, Jerry, true, false, c1a, c1b);
+				if (Jerry.hp() <= 0) {
+					Jerry.dead();
+					window.setScene(Floor1_S);
+				} else if (player.hp <= 0) {
+					window.setScene(gameOverScene);
+				}
+			}
+		});
 		
+		Defend.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				combatTurn(player, Jerry, false, true, c1a, c1b);
+				if (player.hp <= 0) {
+					window.setScene(gameOverScene);
+				}
+			}
+		});
 		
-		button1.setOnAction(e -> window.setScene(Floor1_C));
+		startButton.setOnAction(e -> window.setScene(Floor1_C));
 		
-		window.setScene(scene1);
+		window.setScene(startMenu);
 		window.setTitle("Title");
 		window.show();	
-	}
-	
-	
+	}	
 }

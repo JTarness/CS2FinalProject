@@ -79,7 +79,7 @@ public class hero {
 		if(hp<0) {
 			hp=0;
 		}
-		return hp;
+		return hpDamage;
 	}
 
 	public int hpINC(int INC) {
@@ -116,5 +116,13 @@ public class hero {
 		keys = keys + INC;
 		return keys;
 	}
+	
+	public void reset() {
+		hp = 10;
+		attack = 3;
+		defense = 3;
+		speed = 3;
+	}
+	
 
 }
