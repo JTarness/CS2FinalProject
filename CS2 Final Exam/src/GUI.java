@@ -72,9 +72,6 @@ public class GUI extends Application {
 		
 		// Goblin Combat Screen
 		
-		
-		
-		
 		Button Attack = new Button("Attack");
 		Button Defend = new Button("Defend");
 		Button Flee = new Button("Flee");
@@ -104,8 +101,8 @@ public class GUI extends Application {
 		
 		// Floor 1 Center
 		Button Floor1_C_S = new Button("S");
-		Button Floor1_C_E = new Button("E");
-		Button Floor1_C_W = new Button("W");
+		Button Floor1_C_E = new Button("W");
+		Button Floor1_C_W = new Button("E");
 		Button Floor1_C_R = new Button("Rest");
 		Button Floor1_C_D = new Button("Down");
 		Label Floor1_Label = new Label("Floor 1");
@@ -135,14 +132,19 @@ public class GUI extends Application {
 		AnchorPane.setTopAnchor(Floor1_Label, 5.0);
 		AnchorPane.setLeftAnchor(Floor1_Label,5.0);
 		
-		Floor1_C_Anchor.getChildren().addAll(Floor1_C_S,Floor1_C_E,Floor1_C_W,Floor1_C_D,Floor1_C_R, Floor1_Label);
+		Floor1_C_Anchor.getChildren().addAll(Floor1_C_S,Floor1_C_E,Floor1_C_W,Floor1_C_R, Floor1_Label);
 		Scene Floor1_C = new Scene(Floor1_C_Anchor, WIDTH, HEIGHT);
 		
-		Floor1_C_R.setOnAction(e -> window.setScene(combatScene));
+		Floor1_C_R.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				player.heal();
+			}
+		});
 		
 		
 		// Floor 1 West
-		Button Floor1_W_E = new Button("E");
+		Button Floor1_W_E = new Button("W");
 		Floor1_W_E.setMinWidth(25);
 		Floor1_W_E.setMinHeight(100);
 		AnchorPane Floor1_W_Anchor = new AnchorPane();
@@ -153,17 +155,49 @@ public class GUI extends Application {
 		Floor1_C_W.setOnAction(e -> window.setScene(Floor1_W));
 		
 		Floor1_W_E.setOnAction(e -> window.setScene(Floor1_C));
-		
-		
+		Floor1_W_E.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				window.setScene(Floor1_C);
+				if(player.getKeys() > 0) {
+					Floor1_C_Anchor.getChildren().add(Floor1_C_D);
+				}
+			}
+		});
+		Flee.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				window.setScene(Floor1_C);
+			}
+		});
 		
 		// Floor 1 East
-		Button Floor1_E_W = new Button("W");
+		
+		Sword ironSword = new Sword("Iron Sword", 3, 0, 0);
+		Button Floor1_Sword = new Button("Pick up the sword");
+		Floor1_Sword.setMinWidth(150);
+		Floor1_Sword.setMinHeight(25);
+		
+		Label swordLabel = new Label("There is a sword on the ground...");
+		Floor1_Sword.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				player.changeEquipment(true, ironSword);
+				swordLabel.setText("You picked up an iron sword!");
+				Floor1_Sword.setVisible(false);
+			}
+		});
+		AnchorPane.setTopAnchor(swordLabel, 200.0);
+		AnchorPane.setLeftAnchor(swordLabel,250.0);
+		Button Floor1_E_W = new Button("E");
 		Floor1_E_W.setMinWidth(25);
 		Floor1_E_W.setMinHeight(100);
 		AnchorPane Floor1_E_Anchor = new AnchorPane();
 		AnchorPane.setTopAnchor(Floor1_E_W, 175.0);
 		AnchorPane.setRightAnchor(Floor1_E_W,0.0);
-		Floor1_E_Anchor.getChildren().add(Floor1_E_W);
+		AnchorPane.setTopAnchor(Floor1_Sword, 250.0);
+		AnchorPane.setLeftAnchor(Floor1_Sword,250.0);
+		Floor1_E_Anchor.getChildren().addAll(Floor1_E_W, Floor1_Sword, swordLabel);
 		Scene Floor1_E = new Scene(Floor1_E_Anchor, WIDTH, HEIGHT);
 		Floor1_C_E.setOnAction(e -> window.setScene(Floor1_E));
 		
@@ -205,8 +239,8 @@ public class GUI extends Application {
 		
 		// Floor 2 Center
 		Button Floor2_C_S = new Button("S");
-		Button Floor2_C_E = new Button("E");
-		Button Floor2_C_W = new Button("W");
+		Button Floor2_C_E = new Button("W");
+		Button Floor2_C_W = new Button("E");
 		Button Floor2_C_R = new Button("Rest");
 		Button Floor2_C_U = new Button("Up");
 		Button Floor2_C_D = new Button("Down");
@@ -247,7 +281,7 @@ public class GUI extends Application {
 		Floor2_C_U.setOnAction(e -> window.setScene(Floor1_C));
 		
 		// Floor 2 West
-		Button Floor2_W_E = new Button("E");
+		Button Floor2_W_E = new Button("W");
 		Floor2_W_E.setMinWidth(25);
 		Floor2_W_E.setMinHeight(100);
 		AnchorPane Floor2_W_Anchor = new AnchorPane();
@@ -260,7 +294,7 @@ public class GUI extends Application {
 		Floor2_W_E.setOnAction(e -> window.setScene(Floor2_C));
 		
 		// Floor 2 East
-		Button Floor2_E_W = new Button("W");
+		Button Floor2_E_W = new Button("E");
 		Floor2_E_W.setMinWidth(25);
 		Floor2_E_W.setMinHeight(100);
 		AnchorPane Floor2_E_Anchor = new AnchorPane();
@@ -298,6 +332,8 @@ public class GUI extends Application {
 					window.setScene(startMenu);
 					c1a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
 					c1b.setText("");
+					Floor1_Sword.setVisible(true);
+					swordLabel.setText("There is a sword on the ground...");
 					}
 				});
 				

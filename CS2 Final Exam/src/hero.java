@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class hero {
 	String name;
 	int hp;
+	int maxHP;
 	int attack;
 	int defense;
 	int speed;
@@ -16,6 +17,7 @@ public class hero {
 	public hero(String name, int hp, int attack, int defense, int speed) {
 		this.name = name;
 		this.hp = hp;
+		this.maxHP = hp;
 		this.attack = attack;
 		this.defense = defense;
 		this.speed = speed;
@@ -23,6 +25,9 @@ public class hero {
 		this.baseDefense=defense;
 		this.baseHp=hp;
 		this.baseSpeed=speed;
+		equipment = new ArrayList<Equipment>();
+		equipment.add(new Sword("", 0,0,0));
+		equipment.add(new Shield("", 0,0,0));
 	}
 
 	public String getName() {
@@ -34,7 +39,7 @@ public class hero {
 	}
 
 	public int getAttack() {
-		return attack;
+		return attack + equipment.get(0).getAttack();
 	}
 
 	public int getDefense() {
@@ -122,7 +127,12 @@ public class hero {
 		attack = 3;
 		defense = 3;
 		speed = 3;
+		equipment.set(0,new Sword("", 0,0,0));
+		equipment.set(0,new Shield("", 0,0,0));
 	}
 	
+	public void heal() {
+		hp = maxHP;
+	}
 
 }
