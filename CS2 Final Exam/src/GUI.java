@@ -16,6 +16,7 @@ public class GUI extends Application {
 	final int HEIGHT = 500;
 	
 	final int WIDTH = 700;
+	
 	public static void combatTurn(hero h, Enemy e, Boolean Attack, Boolean Defend, Label a, Label b) {
 		if(h.getSpeed()>=e.speed()) {
 			if(Attack == true) {
@@ -33,19 +34,9 @@ public class GUI extends Application {
 			} else {
 				a.setText(String.format("%s attacks the %s for %d damage!", e.getName(),h.getName(),h.hpLost(e.attack())));
 				b.setText(String.format("%s defends!", h.getName()));
+				h.defenseINC(2);
 			}
 		}
-	}
-	public static void attack(goblin g) {
-		System.out.println("Attack!");
-		g.hpLost(5);
-		
-	}
-	
-	public static void defend(hero h) {
-		h.defenseINC(2);
-		
-		System.out.println("Defend!");
 	}
 	
 	public static void main(String[] args) {
