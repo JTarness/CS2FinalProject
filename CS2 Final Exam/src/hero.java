@@ -9,10 +9,6 @@ public class hero {
 	int speed;
 	ArrayList<Equipment> equipment;
 	int keys = 0;
-	final int baseHp;
-	final int baseAttack;
-	final int baseDefense;
-	final int baseSpeed;
 
 	public hero(String name, int hp, int attack, int defense, int speed) {
 		this.name = name;
@@ -21,10 +17,6 @@ public class hero {
 		this.attack = attack;
 		this.defense = defense;
 		this.speed = speed;
-		this.baseAttack=attack;
-		this.baseDefense=defense;
-		this.baseHp=hp;
-		this.baseSpeed=speed;
 		equipment = new ArrayList<Equipment>();
 		equipment.add(new Sword("", 0,0,0));
 		equipment.add(new Shield("", 0,0,0));
@@ -39,31 +31,31 @@ public class hero {
 	}
 
 	public int getAttack() {
-		return attack + equipment.get(0).getAttack();
+		return attack + equipment.get(0).getAttack() + equipment.get(1).getAttack();
 	}
 
 	public int getDefense() {
-		return defense;
+		return defense + equipment.get(0).getDefense() + equipment.get(1).getDefense();
 	}
 	
 	public int getSpeed() {
-		return speed;
+		return speed + equipment.get(0).getSpeed() + equipment.get(1).getSpeed();
 	}
 	
 	public int getBaseAttack() {
-		return baseAttack;
+		return attack;
 	}
 	
 	public int getBaseDefense() {
-		return baseDefense;
+		return defense;
 	}
 	
 	public int getBaseHp() {
-		return baseHp;
+		return hp;
 	}
 	
 	public int getBaseSpeed() {
-		return baseSpeed;
+		return speed;
 	}
 
 	public ArrayList<Equipment> getEquipment() {
@@ -88,22 +80,22 @@ public class hero {
 	}
 
 	public int hpINC(int INC) {
-		hp = baseHp + INC;
+		hp = hp + INC;
 		return hp;
 	}
 
 	public int attackINC(int INC) {
-		attack = baseAttack + INC;
+		attack = attack + INC;
 		return attack;
 	}
 
 	public int defenseINC(int INC) {
-		defense = baseDefense + INC;
+		defense = defense + INC;
 		return defense;
 	}
 
 	public int speedINC(int INC) {
-		speed = baseSpeed + INC;
+		speed = speed + INC;
 		return speed;
 	}
 
@@ -129,10 +121,19 @@ public class hero {
 		speed = 3;
 		equipment.set(0,new Sword("", 0,0,0));
 		equipment.set(0,new Shield("", 0,0,0));
+		keys = 0;
 	}
 	
 	public void heal() {
 		hp = maxHP;
+	}
+	
+	public void levelUp() {
+		attackINC(1);
+		defenseINC(1);
+		maxHP = hpINC(1);
+		speedINC(1);
+		heal();
 	}
 
 }
