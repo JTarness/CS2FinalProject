@@ -60,7 +60,7 @@ public class GUI extends Application {
 		window.setMinWidth(WIDTH);
 		
 		// Start Screen
-		Label gameTitle = new Label("Game Title");
+		Label gameTitle = new Label("Dragon's Dungeon");
 		Button startButton = new Button("Start");
 		startButton.setPrefSize(60, 40);
 		VBox menu = new VBox(20);
@@ -469,7 +469,7 @@ public class GUI extends Application {
 		startButton.setOnAction(e -> window.setScene(Floor1_C));
 		
 		window.setScene(startMenu);
-		window.setTitle("Title");
+		window.setTitle("Dragon's Dungeon");
 		window.show();	
 	}	
 }
