@@ -398,7 +398,8 @@ public class GUI extends Application {
 					swordLabel.setText("There is a sword on the ground...");
 					Floor1_Key.setVisible(true);
 					keyLabel.setText("There is a key on the ground...");
-					c2a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
+					Floor1_C_D.setVisible(false);
+					c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
 					c2b.setText("");
 					}
 				});
