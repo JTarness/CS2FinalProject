@@ -3,7 +3,7 @@
 public class skeleton extends Enemy {
 
 	public skeleton(String name) {
-		super(name, 20,5,5,5);
+		super(name, 12,5,4,4);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class skeleton extends Enemy {
 	
 	@Override
 	public void reset() {
-		hp = 30;
+		hp = 12;
 	}
 	
 }

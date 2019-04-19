@@ -67,10 +67,10 @@ public class hero {
 	}
 
 	public int hpLost(int hpDamage) {
-		if(hpDamage - defense <= 0) {
+		if(hpDamage - this.getDefense() <= 0) {
 			hpDamage =1;
 		}else {
-			hpDamage = hpDamage -defense;
+			hpDamage = hpDamage -this.getDefense();
 		}
 		hp = hp - hpDamage;
 		if(hp<0) {

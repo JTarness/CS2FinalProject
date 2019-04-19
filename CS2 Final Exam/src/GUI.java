@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
@@ -60,6 +59,7 @@ public class GUI extends Application {
 		Scene startMenu = new Scene(menu, WIDTH, HEIGHT);
 		
 		// Goblin Combat Screen
+		
 		Button Attack = new Button("Attack");
 		Button Defend = new Button("Defend");
 		Button Flee = new Button("Flee");
@@ -101,7 +101,26 @@ public class GUI extends Application {
 			
 		combat2.getChildren().addAll(c2a,c2b);
 		
+		// Dragon Combat Screen
+		Button Attack3 = new Button("Attack");
+		Button Defend3 = new Button("Defend");
+		Button Flee3 = new Button("Flee");
+		HBox combatMenu3 = new HBox(50);
+		AnchorPane combat3 = new AnchorPane();
 		
+		combatMenu3.getChildren().addAll(Attack3, Defend3, Flee3);
+		AnchorPane.setTopAnchor(combatMenu3, 300.0);
+		AnchorPane.setLeftAnchor(combatMenu3,200.0);
+		combat3.getChildren().add(combatMenu3);
+		Scene combatScene3 = new Scene(combat3);
+		Label c3a = new Label(String.format("%s is attacked by a Dragon!", player.getName()));
+		AnchorPane.setTopAnchor(c3a,200.0);
+		AnchorPane.setLeftAnchor(c3a, 200.0);
+		Label c3b = new Label("");
+		AnchorPane.setTopAnchor(c3b,225.0);
+		AnchorPane.setLeftAnchor(c3b, 200.0);
+			
+		combat3.getChildren().addAll(c3a,c3b);
 		
 
 		// Floor 1 Center
@@ -191,12 +210,15 @@ public class GUI extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				window.setScene(Floor1_C);
+				c1a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
+				c1b.setText("");
+				Jerry.reset();
 			}
 		});
 		
 		// Floor 1 East
 		
-		Sword ironSword = new Sword("Iron Sword", 3, 0, 0);
+		Sword goldSword = new Sword("Gold Sword", 3, 1, 0);
 		Button Floor1_Sword = new Button("Pick up the sword");
 		Floor1_Sword.setMinWidth(150);
 		Floor1_Sword.setMinHeight(25);
@@ -205,8 +227,8 @@ public class GUI extends Application {
 		Floor1_Sword.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				player.changeEquipment(true, ironSword);
-				swordLabel.setText("You picked up an iron sword!");
+				player.changeEquipment(true, goldSword);
+				swordLabel.setText("You picked up a gold sword!");
 				Floor1_Sword.setVisible(false);
 			}
 		});
@@ -333,7 +355,10 @@ public class GUI extends Application {
 		AnchorPane Floor2_E_Anchor = new AnchorPane();
 		AnchorPane.setTopAnchor(Floor2_E_W, 175.0);
 		AnchorPane.setRightAnchor(Floor2_E_W,0.0);
-		Floor2_E_Anchor.getChildren().add(Floor2_E_W);
+		Label victory2 = new Label("The skeleton has been defeated!\nYou leveled up! All stats increased by 1!");
+		AnchorPane.setTopAnchor(victory2, 200.0);
+		AnchorPane.setLeftAnchor(victory2,250.0);
+		Floor2_E_Anchor.getChildren().addAll(Floor2_E_W, victory2);
 		Scene Floor2_E = new Scene(Floor2_E_Anchor, WIDTH, HEIGHT);
 		Floor2_C_E.setOnAction(e -> window.setScene(Floor2_E));
 		
@@ -359,9 +384,30 @@ public class GUI extends Application {
 		AnchorPane Floor2_S_Anchor = new AnchorPane();
 		AnchorPane.setTopAnchor(Floor2_S_N, 0.0);
 		AnchorPane.setLeftAnchor(Floor2_S_N,300.0);
-		Floor2_S_Anchor.getChildren().add(Floor2_S_N);
-		Scene Floor2_S = new Scene(Floor2_S_Anchor, WIDTH, HEIGHT);
 		
+		Floor2_S_N.setOnAction(e -> window.setScene(Floor2_C));
+		
+		Shield ironShield = new Shield("Iron Shield", 0, 3, 0);
+		Button Floor1_Shield = new Button("Pick up the shield");
+		Floor1_Shield.setMinWidth(150);
+		Floor1_Shield.setMinHeight(25);
+		
+		Label shieldLabel = new Label("There is a shield on the ground...");
+		Floor1_Shield.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				player.changeEquipment(false, ironShield);
+				shieldLabel.setText("You picked up an iron shield!");
+				Floor1_Shield.setVisible(false);
+			}
+		});
+		AnchorPane.setTopAnchor(shieldLabel, 200.0);
+		AnchorPane.setLeftAnchor(shieldLabel,250.0);
+		AnchorPane.setTopAnchor(Floor1_Shield, 250.0);
+		AnchorPane.setLeftAnchor(Floor1_Shield,250.0);
+		Floor2_S_Anchor.getChildren().addAll(Floor2_S_N, shieldLabel, Floor1_Shield);
+		Scene Floor2_S = new Scene(Floor2_S_Anchor, WIDTH, HEIGHT);
+
 		Floor2_C_S.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
@@ -369,7 +415,6 @@ public class GUI extends Application {
 			}
 		});
 		
-		Floor2_S_N.setOnAction(e -> window.setScene(Floor2_C));
 			
 		//Game Over Screen
 				Label gameOver = new Label("Game Over...");
@@ -392,6 +437,7 @@ public class GUI extends Application {
 					Floor1_C_D.setVisible(false);
 					c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
 					c2b.setText("");
+					shieldLabel.setText("There is a shield on the ground...");
 					}
 				});
 				
@@ -454,6 +500,9 @@ public class GUI extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				window.setScene(Floor2_C);
+				c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
+				c2b.setText("");
+				bones.reset();
 			}
 		});
 		
