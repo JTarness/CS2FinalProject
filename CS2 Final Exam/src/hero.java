@@ -83,6 +83,11 @@ public class hero {
 		hp = hp + INC;
 		return hp;
 	}
+	
+	public int maxHPINC(int INC) {
+		maxHP = maxHP + INC;
+		return maxHP;
+	}
 
 	public int attackINC(int INC) {
 		attack = attack + INC;
@@ -131,7 +136,7 @@ public class hero {
 	public void levelUp() {
 		attackINC(1);
 		defenseINC(1);
-		maxHP = hpINC(1);
+		maxHP = maxHPINC(1);
 		speedINC(1);
 		heal();
 	}

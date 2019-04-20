@@ -3,12 +3,12 @@
 public class dragon extends Enemy {
 
 	public dragon(String name) {
-		super(name, 50, 10, 10, 10);
+		super(name, 16, 8, 4, 6);
 	}
 
 	@Override
 	public int attack() {
-		return 10;
+		return 8;
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class dragon extends Enemy {
 
 	@Override
 	public int defense() {
-		return 10;
+		return 6;
 	}
 
 	@Override
@@ -28,6 +28,7 @@ public class dragon extends Enemy {
 	
 	@Override
 	public void reset() {
-		hp = 50;
+		hp = 16;
+		alive = true;
 	}
 }

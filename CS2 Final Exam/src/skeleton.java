@@ -29,6 +29,7 @@ public class skeleton extends Enemy {
 	@Override
 	public void reset() {
 		hp = 12;
+		alive = true;
 	}
 	
 }

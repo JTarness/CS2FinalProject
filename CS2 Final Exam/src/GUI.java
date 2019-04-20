@@ -46,6 +46,7 @@ public class GUI extends Application {
 		hero player = new hero("Player",10,3,3,3);
 		goblin Jerry = new goblin("Goblin");
 		skeleton bones = new skeleton("Skeleton");
+		dragon Trogdor = new dragon("Dragon");
 		window.setMinHeight(HEIGHT);
 		window.setMinWidth(WIDTH);
 		
@@ -104,11 +105,10 @@ public class GUI extends Application {
 		// Dragon Combat Screen
 		Button Attack3 = new Button("Attack");
 		Button Defend3 = new Button("Defend");
-		Button Flee3 = new Button("Flee");
 		HBox combatMenu3 = new HBox(50);
 		AnchorPane combat3 = new AnchorPane();
 		
-		combatMenu3.getChildren().addAll(Attack3, Defend3, Flee3);
+		combatMenu3.getChildren().addAll(Attack3, Defend3);
 		AnchorPane.setTopAnchor(combatMenu3, 300.0);
 		AnchorPane.setLeftAnchor(combatMenu3,200.0);
 		combat3.getChildren().add(combatMenu3);
@@ -328,7 +328,8 @@ public class GUI extends Application {
 		Scene Floor2_C = new Scene(Floor2_C_Anchor, WIDTH, HEIGHT);
 		Floor1_C_D.setOnAction(e -> window.setScene(Floor2_C));
 		Floor2_C_U.setOnAction(e -> window.setScene(Floor1_C));
-		Floor1_C_R.setOnAction(new EventHandler<ActionEvent>() {
+		
+		Floor2_C_R.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				player.heal();
@@ -342,11 +343,41 @@ public class GUI extends Application {
 		AnchorPane Floor2_W_Anchor = new AnchorPane();
 		AnchorPane.setTopAnchor(Floor2_W_E, 175.0);
 		AnchorPane.setLeftAnchor(Floor2_W_E,0.0);
-		Floor2_W_Anchor.getChildren().add(Floor2_W_E);
+		
 		Scene Floor2_W = new Scene(Floor2_W_Anchor, WIDTH, HEIGHT);
 		Floor2_C_W.setOnAction(e -> window.setScene(Floor2_W));
+				
+		Button Floor2_Key = new Button("Pick up the key");
+		Floor2_Key.setMinWidth(150);
+		Floor2_Key.setMinHeight(25);
 		
-		Floor2_W_E.setOnAction(e -> window.setScene(Floor2_C));
+		AnchorPane.setTopAnchor(Floor2_Key, 250.0);
+		AnchorPane.setLeftAnchor(Floor2_Key,250.0);
+		
+		Label keyLabel2 = new Label("There is a key on the ground...");
+		AnchorPane.setTopAnchor(keyLabel2, 200.0);
+		AnchorPane.setLeftAnchor(keyLabel2,250.0);
+		Floor2_Key.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				player.keysINC(1);
+				keyLabel2.setText("You picked up the key!\nNow you can proceed to the final floor.");
+				Floor2_Key.setVisible(false);
+			}
+		});
+		
+		Floor2_W_Anchor.getChildren().addAll(Floor2_W_E, keyLabel2, Floor2_Key);
+		
+		Floor2_W_E.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				if(player.getKeys() == 2) {
+					Floor2_C_D.setVisible(true);
+				}
+				
+				window.setScene(Floor2_C);
+			}
+		});
 		
 		// Floor 2 East
 		Button Floor2_E_W = new Button("E");
@@ -376,7 +407,6 @@ public class GUI extends Application {
 			}
 		});
 
-		
 		// Floor 2 South
 		Button Floor2_S_N = new Button("N");
 		Floor2_S_N.setMinWidth(100);
@@ -415,7 +445,24 @@ public class GUI extends Application {
 			}
 		});
 		
-			
+		// Floor 3 Center
+		Button Floor3_C_N = new Button("N");
+		Floor3_C_N.setMinWidth(100);
+		Floor3_C_N.setMinHeight(25);
+		AnchorPane Floor3_C_Anchor = new AnchorPane();
+		AnchorPane.setTopAnchor(Floor3_C_N, 0.0);
+		AnchorPane.setLeftAnchor(Floor3_C_N,300.0);
+		
+		Floor3_C_N.setOnAction(e -> window.setScene(combatScene3));
+		
+		Label warnLabel = new Label("The air is getting warmer.\nThere are strange sounds coming from the room up ahead...");
+		AnchorPane.setTopAnchor(warnLabel, 200.0);
+		AnchorPane.setLeftAnchor(warnLabel,200.0);
+		Floor3_C_Anchor.getChildren().addAll(Floor3_C_N, warnLabel);
+		Scene Floor3_C = new Scene(Floor3_C_Anchor, WIDTH, HEIGHT);
+
+
+		Floor2_C_D.setOnAction(e -> window.setScene(Floor3_C));
 		//Game Over Screen
 				Label gameOver = new Label("Game Over...");
 				Button retry = new Button("Retry");
@@ -427,6 +474,7 @@ public class GUI extends Application {
 					player.reset();
 					Jerry.reset();
 					bones.reset();
+					Trogdor.reset();
 					window.setScene(startMenu);
 					c1a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
 					c1b.setText("");
@@ -437,14 +485,56 @@ public class GUI extends Application {
 					Floor1_C_D.setVisible(false);
 					c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
 					c2b.setText("");
+					Floor1_Shield.setVisible(true);
 					shieldLabel.setText("There is a shield on the ground...");
+					Floor2_Key.setVisible(true);
+					keyLabel2.setText("There is a key on the ground...");
+					Floor2_C_D.setVisible(false);
+					c3a.setText(String.format("%s is attacked by a Dragon!", player.getName()));
+					c3b.setText("");
+					}
+				});
+				VBox loseMenu = new VBox(20);
+				loseMenu.setAlignment(Pos.CENTER);
+				loseMenu.getChildren().addAll(gameOver, retry);
+				Scene gameOverScene = new Scene(loseMenu,WIDTH, HEIGHT);
+				
+		// Win Screen
+				Label win = new Label("Congraatulations!\n You have won the game!");
+				Button goAgain = new Button("Play again?");
+				goAgain.setPrefSize(120, 40);
+				
+				goAgain.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+					player.reset();
+					Jerry.reset();
+					bones.reset();
+					Trogdor.reset();
+					window.setScene(startMenu);
+					c1a.setText(String.format("%s is attacked by a Goblin!", player.getName()));
+					c1b.setText("");
+					Floor1_Sword.setVisible(true);
+					swordLabel.setText("There is a sword on the ground...");
+					Floor1_Key.setVisible(true);
+					keyLabel.setText("There is a key on the ground...");
+					Floor1_C_D.setVisible(false);
+					c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
+					c2b.setText("");
+					Floor1_Shield.setVisible(true);
+					shieldLabel.setText("There is a shield on the ground...");
+					Floor2_Key.setVisible(true);
+					keyLabel2.setText("There is a key on the ground...");
+					Floor2_C_D.setVisible(false);
+					c3a.setText(String.format("%s is attacked by a Dragon!", player.getName()));
+					c3b.setText("");
 					}
 				});
 				
-				VBox menu2 = new VBox(20);
-				menu2.setAlignment(Pos.CENTER);
-				menu2.getChildren().addAll(gameOver, retry);
-				Scene gameOverScene = new Scene(menu2,WIDTH, HEIGHT);
+				VBox winMenu = new VBox(20);
+				winMenu.setAlignment(Pos.CENTER);
+				winMenu.getChildren().addAll(win, goAgain);
+				Scene winScene = new Scene(winMenu,WIDTH, HEIGHT);
 
 				
 		Attack.setOnAction(new EventHandler<ActionEvent>() {
@@ -470,7 +560,6 @@ public class GUI extends Application {
 				}
 			}
 		});
-		
 		
 		Attack2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -503,6 +592,30 @@ public class GUI extends Application {
 				c2a.setText(String.format("%s is attacked by a Skeleton!", player.getName()));
 				c2b.setText("");
 				bones.reset();
+			}
+		});
+		
+		Attack3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				combatTurn(player, Trogdor, true, false, c3a, c3b);
+				if (Trogdor.hp() <= 0) {
+					Trogdor.dead();
+					player.levelUp();
+					window.setScene(winScene);
+				} else if (player.hp <= 0) {
+					window.setScene(gameOverScene);
+				}
+			}
+		});
+		
+		Defend3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				combatTurn(player, Trogdor, false, true, c3a, c3b);
+				if (player.hp <= 0) {
+					window.setScene(gameOverScene);
+				}
 			}
 		});
 		
