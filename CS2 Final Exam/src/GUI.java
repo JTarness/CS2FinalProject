@@ -59,6 +59,21 @@ public class GUI extends Application {
 		menu.getChildren().addAll(gameTitle, startButton);
 		Scene startMenu = new Scene(menu, WIDTH, HEIGHT);
 		
+		// Tutorial Screen
+		
+		Label exploreControl = new Label("The goal of the game is to reach the end of the\ndungeon. To do this, you must explore and find\na key on each floor.");
+		
+		Label combatControl = new Label("While exploring, you may meet enemies who wish\nto end your journey. When in combat, press attack\nto attack the enemy, defend to defend yourself,\nand flee to escape.");
+		
+		Label rest = new Label("If you find yourself low on health, press the rest\n button and you'll feel better in no time..");
+		
+		Button go = new Button("Go!");
+		
+		VBox tutorialMenu = new VBox(30);
+		tutorialMenu.setAlignment(Pos.CENTER);
+		tutorialMenu.getChildren().addAll(exploreControl, combatControl,rest, go);
+		Scene tutorialScene = new Scene(tutorialMenu,WIDTH, HEIGHT);
+		
 		// Goblin Combat Screen
 		
 		Button Attack = new Button("Attack");
@@ -619,7 +634,8 @@ public class GUI extends Application {
 			}
 		});
 		
-		startButton.setOnAction(e -> window.setScene(Floor1_C));
+		startButton.setOnAction(e -> window.setScene(tutorialScene));
+		go.setOnAction(e -> window.setScene(tutorialScene));
 		
 		window.setScene(startMenu);
 		window.setTitle("Dragon's Dungeon");
